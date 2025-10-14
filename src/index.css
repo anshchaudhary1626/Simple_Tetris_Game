@@ -1,0 +1,17 @@
+/* Remove default margin and fill full viewport */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Pixel', Arial, Helvetica, sans-serif;
+    background: #000; /* fallback background */
+  }
+  
+  /* Custom pixel font */
+  @font-face {
+    font-family: 'Pixel';
+    src: url('font/Pixel-LCD-7.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
