@@ -1,16 +1,96 @@
-# React + Vite
+# Simple Tetris Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A classic **Tetris game** built with **React**, **Vite**, and **Styled Components**.  
+Supports keyboard controls, scoring, level progression, and high score tracking (per device using `localStorage`).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎮 Features
 
-## React Compiler
+- Move tetrominoes **left/right** using arrow keys.  
+- **Rotate** tetrominoes with the **up arrow**.  
+- **Soft drop** with down arrow.  
+- **Auto-drop** speed increases with level.  
+- **Score, Rows, Level** display.  
+- **High Score** tracked in `localStorage`.  
+- **Start Game** and **Reset Game** buttons.  
+- Responsive game layout with background image.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React 18**  
+- **Vite** (fast development and build)  
+- **Styled Components** for styling  
+- Custom React hooks: `usePlayer`, `useStage`, `useInterval`, `useGameStatus`  
+
+---
+## 📂 Project Structure
+TETRIS-APP
+│
+├── node_modules/
+│
+├── public/
+│   └── vite.svg
+│
+├── src/
+│   ├── assets/
+│   │   └── react.svg
+│   │
+│   ├── components/
+│   │   ├── Cell.jsx
+│   │   ├── Display.jsx
+│   │   ├── Stage.jsx
+│   │   ├── StartButton.jsx
+│   │   └── Tetris.jsx
+│   │
+│   ├── font/
+│   │   └── Pixel-LCD-7.woff
+│   │
+│   ├── hooks/
+│   │   ├── useGameStatus.jsx
+│   │   ├── useInterval.jsx
+│   │   ├── usePlayer.jsx
+│   │   └── useStage.jsx
+│   │
+│   ├── img/
+│   │   └── bg.png
+│   │
+│   ├── styles/
+│   │   ├── StyledCell.jsx
+│   │   ├── StyledDisplay.jsx
+│   │   ├── StyledStage.jsx
+│   │   ├── StyledStartButton.jsx
+│   │   └── StyledTetris.jsx
+│   │
+│   ├── App.css
+│   ├── App.jsx
+│   ├── gamHelper.jsx
+│   ├── index.css
+│   ├── main.jsx
+│   └── tetrominos.jsx
+│
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+└── package.json
+
+---
+
+## ⚡ Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/anshchaudhary1626/Simple_Tetris_Game.git
+cd Simple_Tetris_Game
+
+2. Install dependencies:
+npm install
+
+3.	Start the development server:
+npm run dev
+
+4.	Open your browser: http://localhost:5173
