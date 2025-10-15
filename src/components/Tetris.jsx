@@ -11,7 +11,6 @@ import Display from "./Display";
 import StartButton from "./StartButton";
 import TouchControls from "./TouchControls";
 
-
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
@@ -34,13 +33,17 @@ const Tetris = () => {
     }
   }, [score, highScore]);
 
+  // Move player horizontally
   const movePlayer = (dir) => {
-    if (!checkCollision(player, stage, { x: dir, y: 0 })) {
+    if (!gameOver && !checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
     }
   };
 
+  // Drop piece down
   const drop = () => {
+    if (gameOver) return; // stop dropping if game over
+
     if (rows > (level + 1) * 10) {
       setLevel((prev) => {
         const newLevel = prev + 1;
@@ -52,17 +55,21 @@ const Tetris = () => {
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
+      // collision means piece locks
       if (player.pos.y < 1) {
         setGameOver(true);
-        setDropTime(null);
+        setDropTime(null); // stop interval
+        return;
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }
   };
 
   const dropPlayer = () => {
-    setSoftDrop(true);
-    drop();
+    if (!gameOver) {
+      setSoftDrop(true);
+      drop();
+    }
   };
 
   const keyUp = ({ keyCode }) => {
@@ -73,12 +80,11 @@ const Tetris = () => {
   };
 
   const move = ({ keyCode }) => {
-    if (!gameOver) {
-      if (keyCode === 37) movePlayer(-1);
-      else if (keyCode === 39) movePlayer(1);
-      else if (keyCode === 40) dropPlayer();
-      else if (keyCode === 38) playerRotate(stage, 1);
-    }
+    if (gameOver) return; // disable all keyboard controls
+    if (keyCode === 37) movePlayer(-1);
+    else if (keyCode === 39) movePlayer(1);
+    else if (keyCode === 40) dropPlayer();
+    else if (keyCode === 38) playerRotate(stage, 1);
   };
 
   const startGame = () => {
@@ -101,11 +107,10 @@ const Tetris = () => {
     setSoftDrop(false);
   };
 
+  // Automatically drop the piece only if game not over
   useInterval(() => {
-    drop();
+    if (!gameOver) drop();
   }, softDrop ? 50 : dropTime);
-
-  const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   return (
     <StyledTetrisWrapper
@@ -133,17 +138,20 @@ const Tetris = () => {
           <StartButton callBack={resetGame}>Reset Game</StartButton>
         </aside>
       </StyledTetris>
-      <TouchControls
-        onMoveLeft={() => movePlayer(-1)}
-        onMoveRight={() => movePlayer(1)}
-        onRotate={() => playerRotate(stage, 1)}
-        onDrop={() => {
-        setSoftDrop(true);
-        drop();
-        setTimeout(() => setSoftDrop(false), 150);
-        }}
-      />
 
+      {/* Disable TouchControls when gameOver */}
+      {!gameOver && (
+        <TouchControls
+          onMoveLeft={() => movePlayer(-1)}
+          onMoveRight={() => movePlayer(1)}
+          onRotate={() => playerRotate(stage, 1)}
+          onDrop={() => {
+            setSoftDrop(true);
+            drop();
+            setTimeout(() => setSoftDrop(false), 150);
+          }}
+        />
+      )}
     </StyledTetrisWrapper>
   );
 };
