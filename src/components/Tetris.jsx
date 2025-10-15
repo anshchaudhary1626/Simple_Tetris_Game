@@ -9,21 +9,24 @@ import { useInterval } from "../hooks/useInterval";
 import Stage from "./Stage";
 import Display from "./Display";
 import StartButton from "./StartButton";
+import TouchControls from "./TouchControls";
+
 
 const Tetris = () => {
-  const [dropTime, setDropTime] = useState(null); 
+  const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [softDrop, setSoftDrop] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
-  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
+  const [score, setScore, rows, setRows, level, setLevel] =
+    useGameStatus(rowsCleared);
 
   const [highScore, setHighScore] = useState(
     () => parseInt(localStorage.getItem("highScore")) || 0
   );
 
-  // Update high score if needed
+  // Update high score
   useEffect(() => {
     if (score > highScore) {
       setHighScore(score);
@@ -31,7 +34,7 @@ const Tetris = () => {
     }
   }, [score, highScore]);
 
-  const movePlayer = dir => {
+  const movePlayer = (dir) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
     }
@@ -39,7 +42,7 @@ const Tetris = () => {
 
   const drop = () => {
     if (rows > (level + 1) * 10) {
-      setLevel(prev => {
+      setLevel((prev) => {
         const newLevel = prev + 1;
         setDropTime(1000 / (newLevel + 1) + 200);
         return newLevel;
@@ -78,7 +81,6 @@ const Tetris = () => {
     }
   };
 
-  // Start or restart game: resets everything including score, rows, level
   const startGame = () => {
     setStage(createStage());
     resetPlayer();
@@ -89,12 +91,11 @@ const Tetris = () => {
     setSoftDrop(false);
   };
 
-  // Reset only the current game (not high score)
   const resetGame = () => {
     setStage(createStage());
     resetPlayer();
     setGameOver(false);
-    setDropTime(null);  // Tetris will not auto-drop until user starts
+    setDropTime(null);
     setRows(0);
     setLevel(0);
     setSoftDrop(false);
@@ -103,6 +104,8 @@ const Tetris = () => {
   useInterval(() => {
     drop();
   }, softDrop ? 50 : dropTime);
+
+  const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
   return (
     <StyledTetrisWrapper
@@ -114,21 +117,33 @@ const Tetris = () => {
     >
       <StyledTetris>
         <Stage stage={stage} />
+
         <aside>
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
-            <div>
+            <>
               <Display text={`Score: ${score}`} />
               <Display text={`Rows: ${rows}`} />
               <Display text={`Level: ${level}`} />
               <Display text={`High Score: ${highScore}`} />
-            </div>
+            </>
           )}
           <StartButton callBack={startGame}>Start Game</StartButton>
           <StartButton callBack={resetGame}>Reset Game</StartButton>
         </aside>
       </StyledTetris>
+      <TouchControls
+        onMoveLeft={() => movePlayer(-1)}
+        onMoveRight={() => movePlayer(1)}
+        onRotate={() => playerRotate(stage, 1)}
+        onDrop={() => {
+        setSoftDrop(true);
+        drop();
+        setTimeout(() => setSoftDrop(false), 150);
+        }}
+      />
+
     </StyledTetrisWrapper>
   );
 };
