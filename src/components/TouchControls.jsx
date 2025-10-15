@@ -3,28 +3,41 @@ import styled from "styled-components";
 
 const ControlsWrapper = styled.div`
   position: fixed;
-  bottom: 4vh;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: 5vw; /* distance from right edge */
+  transform: translateY(-50%); /* vertically centered */
   display: grid;
   grid-template-areas:
     ". up ."
     "left down right";
-  gap: 6px;
+  gap: 8px;
   z-index: 1000;
 
-  /* Hide on large screens */
-  @media (min-width: 1024px) {
-    display: none;
+  /* --- Large screen (desktop) --- */
+  @media (min-width: 1025px) {
+    right: 5vw; /* Adjust this if it's too close/far */
+    bottom: auto;
+    transform: translateY(-50%);
   }
 
-  /* Adjust positioning for tablets */
+  /* --- Tablet --- */
+  @media (max-width: 1024px) {
+    right: 3vw;
+    top: auto;
+    bottom: 4vh;
+    transform: none;
+  }
+
+  /* --- Mobile --- */
   @media (max-width: 768px) {
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
     bottom: 3vh;
     gap: 5px;
   }
 
-  /* Small mobile adjustments */
+  /* --- Small mobile --- */
   @media (max-width: 480px) {
     bottom: 2.5vh;
     gap: 4px;
@@ -50,21 +63,21 @@ const ControlButton = styled.button`
     transform: scale(0.95);
   }
 
-  /* Tablet size (slightly smaller) */
-  @media (max-width: 1023px) {
+  /* Tablet */
+  @media (max-width: 1024px) {
     width: 60px;
     height: 60px;
     font-size: 0.9rem;
   }
 
-  /* Small mobile screens */
+  /* Mobile */
   @media (max-width: 480px) {
     width: 50px;
     height: 50px;
     font-size: 0.8rem;
   }
 
-  /* Ultra-small (e.g., 360px width) */
+  /* Ultra-small */
   @media (max-width: 360px) {
     width: 40px;
     height: 40px;
