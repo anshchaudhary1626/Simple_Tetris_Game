@@ -51,7 +51,7 @@ const ControlButton = styled.button`
   }
 
   /* Tablet size (slightly smaller) */
-  @media (max-width: 768px) {
+  @media (max-width: 1023px) {
     width: 60px;
     height: 60px;
     font-size: 0.9rem;
