@@ -32,8 +32,8 @@ const ControlsWrapper = styled.div`
 `;
 
 const ControlButton = styled.button`
-  width: 42px;
-  height: 42px;
+  width: 69px;
+  height: 69px;
   border-radius: 10px;
   background: rgba(50, 50, 50, 0.85);
   color: white;
@@ -52,22 +52,22 @@ const ControlButton = styled.button`
 
   /* Tablet size (slightly smaller) */
   @media (max-width: 768px) {
-    width: 38px;
-    height: 38px;
+    width: 60px;
+    height: 60px;
     font-size: 0.9rem;
   }
 
   /* Small mobile screens */
   @media (max-width: 480px) {
-    width: 34px;
-    height: 34px;
+    width: 50px;
+    height: 50px;
     font-size: 0.8rem;
   }
 
   /* Ultra-small (e.g., 360px width) */
   @media (max-width: 360px) {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     font-size: 0.75rem;
   }
 `;
